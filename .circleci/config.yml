@@ -2,6 +2,17 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
+orbs:
+  node: circleci/node@4.7
+
+executors:
+  docker: # Docker using the Base Convenience Image
+    docker:
+      - image: cimg/base:stable
+  linux: # a Linux VM running Ubuntu 20.04
+    machine:
+      image: ubuntu-2004:202107-02
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
@@ -25,6 +36,19 @@ jobs:
           environment:
             FIRST_NAME: << parameters.first-name >>
             LAST_NAME: << parameters.last-name >>
+
+  test:
+    parameters:
+      os:
+        type: executor
+      node-version:
+        type: string
+    executor: << parameters.os >>
+    steps:
+      - checkout
+      - node/install:
+          node-version: << parameters.node-version >>
+          install-yarn: true
       
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -42,3 +66,11 @@ workflows:
               last-name:
                 - Doe
                 - Smith
+
+  run-test-workflow:
+    jobs:
+      - test:
+          matrix:
+            parameters:
+              os: [docker, linux]
+              node-version: ["18.17.0", "16.9.0"]
