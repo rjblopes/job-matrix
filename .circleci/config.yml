@@ -12,10 +12,13 @@ jobs:
       - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
+    parameters:
+      first-name:
+        type: string
     steps:
       - checkout
       - run:
-          name: Greeting
+          name: Greeting << parameters.first-name >>
           command: "echo Hello, World!"
       
 # Orchestrate jobs using workflows
@@ -25,3 +28,9 @@ workflows:
     jobs:
       - say-hello:
           name: Greeting
+          matrix:
+            parameters:
+              first-name:
+                - John
+                - Jane
+                - Mary
