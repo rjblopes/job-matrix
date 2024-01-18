@@ -15,13 +15,16 @@ jobs:
     parameters:
       first-name:
         type: string
+      last-name:
+        type: string
     steps:
       - checkout
       - run:
-          name: Greeting << parameters.first-name >>
+          name: Greeting << parameters.first-name >> << parameters.last-name >>
           command: "echo Hello, $FIRST_NAME!"
           environment:
             FIRST_NAME: << parameters.first-name >>
+            LAST_NAME: << parameters.last-name >>
       
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -29,10 +32,13 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello:
-          name: Greeting << matrix.first-name >>
+          name: Greeting << matrix.first-name >> << matrix.last-name >>
           matrix:
             parameters:
               first-name:
                 - John
                 - Jane
                 - Mary
+              last-name:
+                - Doe
+                - Smith
