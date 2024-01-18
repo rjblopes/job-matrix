@@ -19,7 +19,7 @@ jobs:
       - checkout
       - run:
           name: Greeting << parameters.first-name >>
-          command: "echo Hello, World!"
+          command: "echo Hello, $FIRST_NAME!"
           environment:
             FIRST_NAME: << parameters.first-name >>
       
