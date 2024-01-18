@@ -20,6 +20,8 @@ jobs:
       - run:
           name: Greeting << parameters.first-name >>
           command: "echo Hello, World!"
+          environment:
+            FIRST_NAME: << parameters.first-name >>
       
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -27,7 +29,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello:
-          name: Greeting
+          name: Greeting << matrix.first-name >>
           matrix:
             parameters:
               first-name:
