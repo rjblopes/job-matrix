@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run:
           name: Greeting << parameters.first-name >> << parameters.last-name >>
-          command: "echo Hello, $FIRST_NAME!"
+          command: "echo Hello, $FIRST_NAME $LAST_NAME!"
           environment:
             FIRST_NAME: << parameters.first-name >>
             LAST_NAME: << parameters.last-name >>
